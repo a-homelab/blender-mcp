@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-push:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    uses: a-homelab/github-actions/.github/workflows/build-push-container.yaml@main
+    with:
+      service-name: blender-mcp
+      tags: 1.0.3-blender5.2.2-1
